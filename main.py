@@ -1,4 +1,5 @@
 import os
+import argparse
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -12,12 +13,17 @@ client = OpenAI(
 
 def main():
 
+    parser = argparse.ArgumentParser(description="chatbot")
+    parser.add_argument("user_prompt", type=str, help="User prompt")
+    args = parser.parse_args()
+    content = args.user_prompt
+
     response = client.chat.completions.create(
         model="openrouter/free",
         messages=[
             {
                 "role": "user",
-                "content": "why is the sky blue? one paragraph maximum"
+                "content": content
             }
         ],
     )
