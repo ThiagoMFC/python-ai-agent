@@ -1,5 +1,9 @@
 import os
 from helpers import validate_path
+from dotenv import load_dotenv
+
+load_dotenv()
+max_chars = int(os.environ.get("MAX_CHARS"))
 
 def get_file_content(working_directory: str, file_path: str) -> str:
 
@@ -7,16 +11,19 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     path_validation = validate_path(working_directory, file_path, "file")
     if(path_validation["message"]) != "Success":
         print(path_validation["message"])
-        return
+        return path_validation["message"]
     else:
         target_dir = path_validation["target_dir"]
-
-    is_file = os.path.isfile(target_dir)
-
-    if not is_file:
-        print(f"{file_path} is not a file")
-    else:
-        print(target_dir) 
+        print(target_dir)
 
 
-get_file_content("calculator/pkg", "calculat.py")
+    with open(target_dir, "r") as file:
+        file_content = file.read(max_chars)
+        if len(file_content) == max_chars:
+            file_content += f"...\n[... File {file_path} truncated ad {max_chars} characters]"
+
+    print(file_content)
+    return file_content
+
+
+get_file_content("calculator/pkg", "calculator.py")
