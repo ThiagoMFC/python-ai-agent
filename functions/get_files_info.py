@@ -1,4 +1,5 @@
 import os
+from functions.helpers import validate_path
 
 # Allow the LLM agent to specify which directory it wants to scan, but the working_directory will be pre-set
 # to limit the scope of directories and files that the LLM is able to view
@@ -6,6 +7,12 @@ import os
 def get_files_info(working_directory: str, directory: str= ".")-> str:
     
     # Validate path is within the specified working_directory
+    path_validation = validate_path(working_directory, directory)
+    if(path_validation["message"]) != "Success":
+        return path_validation["message"]
+    else:
+        target_dir = path_validation["target_dir"]
+    """
     try:
         wd_absolute_path = os.path.abspath(working_directory)
         if not os.path.isdir(os.path.join(wd_absolute_path, directory)):
@@ -17,9 +24,7 @@ def get_files_info(working_directory: str, directory: str= ".")-> str:
 
     if not valid_targer_dir:
         return f"Error: Cannot list {directory} as it's outside of permitted working directory"
-
-    #return f"Success: {directory} is within the working directory"
-
+    """
     dir_contents = os.listdir(target_dir)
     final_response = ""
     for content in dir_contents:
