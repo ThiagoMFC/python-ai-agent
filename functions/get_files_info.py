@@ -2,13 +2,14 @@ import os
 
 # Allow the LLM agent to specify which directory it wants to scan, but the working_directory will be pre-set
 # to limit the scope of directories and files that the LLM is able to view
+
 def get_files_info(working_directory: str, directory: str= ".")-> str:
     
     # Validate path is within the specified working_directory
     try:
         wd_absolute_path = os.path.abspath(working_directory)
         if not os.path.isdir(os.path.join(wd_absolute_path, directory)):
-            return f"Error: {directory} is not a directory"
+            return f"Error: {directory} is not in the working directory"
         target_dir = os.path.normpath(os.path.join(wd_absolute_path, directory))
         valid_targer_dir = os.path.commonpath([wd_absolute_path, target_dir]) == wd_absolute_path
     except:
