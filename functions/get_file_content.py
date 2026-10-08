@@ -8,7 +8,7 @@ max_chars = int(os.environ.get("MAX_CHARS"))
 def get_file_content(working_directory: str, file_path: str) -> str:
 
     # Validate path is within the specified working_directory
-    path_validation = validate_path(working_directory, file_path, "file")
+    path_validation = validate_path(working_directory, file_path)
     if(path_validation["message"]) != "Success":
         #print(path_validation["message"])
         return path_validation["message"]

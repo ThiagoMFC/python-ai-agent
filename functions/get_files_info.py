@@ -5,28 +5,21 @@ from functions.helpers import validate_path
 # to limit the scope of directories and files that the LLM is able to view
 
 def get_files_info(working_directory: str, directory: str= ".")-> str:
-    
+
+    final_response = ""
     # Validate path is within the specified working_directory
     path_validation = validate_path(working_directory, directory)
     if(path_validation["message"]) != "Success":
         return path_validation["message"]
     else:
         target_dir = path_validation["target_dir"]
-    """
-    try:
-        wd_absolute_path = os.path.abspath(working_directory)
-        if not os.path.isdir(os.path.join(wd_absolute_path, directory)):
-            return f"Error: {directory} is not in the working directory"
-        target_dir = os.path.normpath(os.path.join(wd_absolute_path, directory))
-        valid_targer_dir = os.path.commonpath([wd_absolute_path, target_dir]) == wd_absolute_path
-    except:
-        return "Error: could not validate working directory path"
 
-    if not valid_targer_dir:
-        return f"Error: Cannot list {directory} as it's outside of permitted working directory"
-    """
+    if not os.path.isdir(target_dir):
+        final_response = f"Error: {directory} is not a directory"
+        return final_response
+    
     dir_contents = os.listdir(target_dir)
-    final_response = ""
+
     for content in dir_contents:
         try:
             is_dir = os.path.isdir(os.path.join(target_dir, content))
