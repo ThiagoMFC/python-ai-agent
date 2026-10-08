@@ -1,5 +1,5 @@
 import os
-from helpers import validate_path
+from functions.helpers import validate_path
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,11 +10,11 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     # Validate path is within the specified working_directory
     path_validation = validate_path(working_directory, file_path, "file")
     if(path_validation["message"]) != "Success":
-        print(path_validation["message"])
+        #print(path_validation["message"])
         return path_validation["message"]
     else:
         target_dir = path_validation["target_dir"]
-        print(target_dir)
+        #print(target_dir)
 
 
     with open(target_dir, "r") as file:
@@ -22,7 +22,7 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         if len(file_content) == max_chars:
             file_content += f"...\n[... File {file_path} truncated ad {max_chars} characters]"
 
-    print(file_content)
+    #print(file_content)
     return file_content
 
 
