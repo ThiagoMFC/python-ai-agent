@@ -1,6 +1,6 @@
 import os
 
-def validate_path(working_directory: str, directory: str, type: str="directory"):
+def validate_path(working_directory: str, directory: str):
 
     return_message = {}
 
@@ -15,6 +15,7 @@ def validate_path(working_directory: str, directory: str, type: str="directory")
 
         target_dir = os.path.normpath(os.path.join(wd_absolute_path, directory))
 
+        #check if target_dir is within working_directory, just to be sure
         valid_target_dir = os.path.commonpath([wd_absolute_path, target_dir]) == wd_absolute_path
 
     except:
