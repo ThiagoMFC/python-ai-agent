@@ -9,7 +9,10 @@ def validate_path(working_directory: str, directory: str, type: str="directory")
 
         if type == "file":
             if not os.path.isfile(os.path.join(wd_absolute_path, directory)):
-                return_message["message"] = f"Error: {directory} file not found within the working directory"
+                if os.path.isdir(os.path.join(wd_absolute_path, directory)):
+                    return_message["message"] = f"Error: {directory} is a directory"
+                else:            
+                    return_message["message"] = f"Error: {directory} file not found within the working directory"
                 return return_message  
         else:
             if not os.path.isdir(os.path.join(wd_absolute_path, directory)):
