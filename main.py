@@ -65,9 +65,10 @@ def main():
         print(f"response tokens: {response.usage.completion_tokens}")
         print(f"User prompt: {args.user_prompt}")
         print(f"Response: {message.content}")
-        for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
+        if message.tool_calls:
+            for tool_call in message.tool_calls:
+                function_args = json.loads(tool_call.function.arguments or "{}")
+                print(f"Calling function: {tool_call.function.name}({function_args})")
     else:
         print(f"Response: {message.content}")
 
