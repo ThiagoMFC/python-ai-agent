@@ -7,6 +7,7 @@ from functions.get_files_info import schema_get_files_info
 from functions.get_file_content import schema_get_file_content
 from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
+from functions.call_function import call_function
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -69,8 +70,10 @@ def main():
             for tool_call in message.tool_calls:
                 function_args = json.loads(tool_call.function.arguments or "{}")
                 print(f"Calling function: {tool_call.function.name}({function_args})")
+                call_function(tool_call, args.verbose)
     else:
         print(f"Response: {message.content}")
+        call_function(message.tool_calls)
 
 
 main()
