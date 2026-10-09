@@ -1,3 +1,20 @@
+schema_get_file_content = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Returns contents of a file in a specified directory relative to the working directory",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "File path to get content from, relative to the working directory (default is the working directory itself)",
+                },
+            },
+        },
+    },
+}
+
 import os
 from functions.helpers import validate_path
 from dotenv import load_dotenv
