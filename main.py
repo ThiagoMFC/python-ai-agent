@@ -49,7 +49,7 @@ def main():
         {"role": "user", "content": args.user_prompt},
     ]
 
-    for _ in range(10):
+    for _ in range(15):
 
         response = client.chat.completions.create(
             model="openrouter/free",
