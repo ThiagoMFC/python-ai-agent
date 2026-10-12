@@ -44,4 +44,4 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     return file_content
 
 
-get_file_content("calculator/pkg", "calculator.py")
+#get_file_content("calculator/pkg", "calculator.py")

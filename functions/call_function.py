@@ -36,11 +36,11 @@ def call_function(tool_call, verbose: bool = False) -> dict:
     # call the function in the map
     result = function_map[function_name](**function_args)
 
-    print({
-        "role": "tool",
-        "tool_call_id": tool_call.id,
-        "content": result,
-    })
+    #print({
+    #    "role": "tool",
+    #    "tool_call_id": tool_call.id,
+    #    "content": result,
+    #})
     
     return {
         "role": "tool",

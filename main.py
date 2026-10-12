@@ -49,31 +49,48 @@ def main():
         {"role": "user", "content": args.user_prompt},
     ]
 
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=messages,
-        tools=available_functions,
-    )
+    for _ in range(10):
 
-    if response is None or response.usage is None:
-        print("bad response")
-        return
+        response = client.chat.completions.create(
+            model="openrouter/free",
+            messages=messages,
+            tools=available_functions,
+        )
 
-    message = response.choices[0].message
+        if response is None or response.usage is None:
+            print("Agent unavailable")
+            return
 
-    if args.verbose is True:
-        print(f"usage tokens: {response.usage.prompt_tokens}")
-        print(f"response tokens: {response.usage.completion_tokens}")
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Response: {message.content}")
-        if message.tool_calls:
-            for tool_call in message.tool_calls:
-                function_args = json.loads(tool_call.function.arguments or "{}")
-                print(f"Calling function: {tool_call.function.name}({function_args})")
-                call_function(tool_call, args.verbose)
-    else:
-        print(f"Response: {message.content}")
-        call_function(message.tool_calls)
+        message = response.choices[0].message
+        result_message = ""
+
+        if args.verbose is True:
+            print(f"usage tokens: {response.usage.prompt_tokens}")
+            print(f"response tokens: {response.usage.completion_tokens}")
+            print(f"User prompt: {args.user_prompt}")
+            print(f"Response: {message.content}")
+            if message.tool_calls:
+                for tool_call in message.tool_calls:
+                    function_args = json.loads(tool_call.function.arguments or "{}")
+                    #print(f"Calling function: {tool_call.function.name}({function_args})")
+                    result_message = call_function(tool_call, args.verbose)
+            else:
+               print(message.content)
+               return
+        else:
+            print(f"Response: {message.content}")
+            result_message = call_function(message.tool_calls)
+
+        if not result_message["content"]:
+            print("bad response")
+            return
+
+        #print(f"-> {result_message["content"]}")
+
+        #make model is aware of conversation
+        messages.append(message)
+        #make model aware of tool call results
+        messages.append(result_message)
 
 
 main()
